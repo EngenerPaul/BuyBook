@@ -1,0 +1,58 @@
+<div class="header" style="min-height: 300; background: rgb(146, 211, 241); padding: 10px 0px 30px 0px; margin-bottom: 30px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 offset-md-9">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Авторизация</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registration' %}">Регистрация</a>
+                    </li>
+                    
+                </ul> 
+
+                
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        
+        <div class="row">
+
+            <div class="col-3 align-self-center">
+                <a href="{% url 'home' %}" style="color: azure; text-decoration: none;">
+                    <h1>BuyBook</h1>
+                </a>
+            </div>
+
+            <div class="col-6 align-self-center">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-9">
+                            <input type="text" name="s" class="form-control" id="" placeholder="Поиск...">
+                        </div>
+                        <div class="col-1" style="padding-left: 0;">
+                            <button type='submit' class='btn' style="padding-left: 0;">
+                                <img src="static/img/loupe.png" alt="loupe" height="25">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-3 align-self-center">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="static\img\basket.png" alt="basket" height="80">
+                    </div>
+                    <div class="col-6">
+                        Корзина<br>
+                        Закладки
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

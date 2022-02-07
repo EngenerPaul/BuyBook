@@ -1,4 +1,8 @@
-/* body {
-    background-color: aquamarine;
-    color: brown;
-} */
+body {
+    background: rgb(245, 245, 241); /* Цвет фона */
+}
+
+
+.header .container .row .col-md-3 .nav .nav-item .nav-link {
+    padding: 0px 16px
+}

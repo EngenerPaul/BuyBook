@@ -1,15 +1,59 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'style.css' %}" rel="stylesheet">
-    <title>Document</title>
-</head>
-<body>
-    {{ hello }}
-</body>
-</html>
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-2" style="min-width: 200px;">
+            <h4 style="text-align: center;">Жанры</h4>
+            <hr>
+            <div style="margin-left: 10px;">
+                {% for genre in genres %}
+                <p>{{ genre.title }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-9">
+            <div class="row">
+
+                {% for book in all_books %}
+                <div class="col-4">
+                    <div class="card h-100">
+                      <img src="{{ book.cover.url }}" style="margin: auto; margin-top: 10px;" alt="cover" height=300>
+                      <div class="card-body">
+                        <h5 class="card-title mb-3">{{ book.title }}</h5>
+                        <h6 class="card-subtitle mb-3 text-muted">{{ book.author.full_name }}</h6>
+                        <div class="row">
+                            <div class="col-3" style="min-width: 60px; padding: 0px 5px; display: flex; align-items: center; justify-content: center;">
+                                <p style="margin: 0px;">{{ book.cost }} ₽</p>
+                            </div>
+                            <div class="col-6" style="padding: 0 5px; min-width: 125px; display: flex; align-items: center;">
+                                <button type='submit' class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; ">
+                                    <img src="static/img/minibasket.png" alt="minibasket" height="20">
+                                    Купить
+                                    
+                                </button>
+                            </div>
+                            <div class="col-3" style="display: flex; align-items: center;">
+                                <button type='submit' class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                                    <img src="static/img/bookmark.png" alt="mark" width="20px">
+                                </button>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    </div>
+                  </div>
+                {% endfor %}
+    
+            </div>
+        </div>
+
+    </div>
+    
+</div>   
+
+{% endblock %}

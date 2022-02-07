@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import CharField, ForeignKey, ManyToManyField, \
                              ImageField, IntegerField, FloatField, \
-                             SlugField
+                             SlugField, TextField
 
 
 
@@ -42,7 +42,8 @@ class Book(models.Model):
     slug = SlugField(max_length=255, unique=True, verbose_name='Url')
     author = ForeignKey(Author, on_delete=models.PROTECT, verbose_name='Автор')
     genre = ManyToManyField(Genre, blank=True, verbose_name='Жанр')
-    cover = ImageField(upload_to='photo/covers/', blank=True, verbose_name='Обложка')
+    cover = ImageField(upload_to='covers/', blank=True, verbose_name='Обложка')
+    # note = TextField(blank=True, verbose_name='Описание')
     pages = IntegerField(verbose_name='Количество страниц')
     isbn = CharField(max_length=30, blank=True, verbose_name='ISBN')
     published_at = IntegerField(blank=True, verbose_name='Год издания')
