@@ -3,13 +3,18 @@
         <div class="row">
             <div class="col-md-3 offset-md-9">
                 <ul class="nav nav-pills">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Авторизация</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'registration' %}">Регистрация</a>
-                    </li>
-                    
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="btn btn-danger" href="{% url 'logout_page' %}">LogOut</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login_page' %}">Authentication</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'registration_page' %}">Registration</a>
+                        </li>
+                    {% endif %}
                 </ul> 
 
                 

@@ -2,8 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 from .models import Book, Author, Genre
 from .forms import AuthUserForm, RegisterUserForm
@@ -29,12 +30,30 @@ class Home(ListView):
 # Authentication
 class CustomLoginView(LoginView):
     template_name = "buybook/login.html"
-    from_class = AuthUserForm
+    form_class = AuthUserForm
     success_url = reverse_lazy('home')
+
+    # success_url does't work
+    def get_success_url(self):
+        return self.success_url
 
 # Registration
 class CustomRegistration(CreateView):
     model = User
     template_name = 'buybook/registration.html'
-    from_class = RegisterUserForm
+    form_class = RegisterUserForm
     success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        """the method is overridden
+        added auto-authentication"""
+
+        form_valid = super().form_valid(form)
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        auth_user = authenticate(username=username, password=password)
+        login(self.request, auth_user)
+        return form_valid
+
+class CustomLogOut(LogoutView):
+    next_page = reverse_lazy('home')
