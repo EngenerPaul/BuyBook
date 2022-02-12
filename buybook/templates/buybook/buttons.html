@@ -1,0 +1,19 @@
+{% load static %}
+
+<div class="row">
+    <div class="col-3" style="min-width: 60px; padding: 0px 5px; display: flex; align-items: center; justify-content: center;">
+        <p style="margin: 0px;">{{ book.cost }} ₽</p>
+    </div>
+    <div class="col-6" style="padding: 0 5px; min-width: 125px; display: flex; align-items: center;">
+        <button type='submit' class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; ">
+            <img src="{% static 'img/minibasket.png' %}" alt="minibasket" height="20">
+            Buy
+            
+        </button>
+    </div>
+    <div class="col-3" style="display: flex; align-items: center;">
+        <button type='submit' class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+            <img src="{% static 'img/bookmark.png' %}" alt="mark" width="20px">
+        </button>
+    </div>
+</div>

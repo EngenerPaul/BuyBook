@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            <img src="{{ book.cover.url }}" alt="cover" height="500" width="auto">
+        </div>
+        <div class="col" style="margin-left: 15px;">
+            <h3>{{ book.title }}</h3>
+            <h5 class="text-muted">{{ book.author.full_name }}</h5>
+            <p>
+                Жанры: 
+                {% for genre in book.genre.all %}
+                {{ genre.title }}
+                {% endfor %}
+            </p>
+            <hr>
+            <div style="width: 300px">
+                <div class="row">
+                    <div class="col-5">
+                        <p>ISBN</p>
+                        <p>Страниц</p> 
+                        <p>Год издания</p>
+                        <p>Тираж</p>
+                        <p>Тип обложки</p>
+                        <p>Формат</p>
+                        <p>Вес, г</p>
+                        <p>В наличии, шт</p>
+                    </div>
+                    <div class="col-6">
+                        <p>{{ book.isbn }}</p>
+                        <p>{{ book.pages }}</p>
+                        <p>{{ book.published_at }}</p>
+                        <p>{{ book.circulation }}</p>
+                        <p>{{ book.cover_type }}</p>
+                        <p>{{ book.book_format }}</p>
+                        <p>{{ book.weight }}</p>
+                        <p>{{ book.units_in_stock }}</p>
+                    </div>
+                </div>
+
+                {% include 'buybook\buttons.html' %}
+
+            </div>
+        </div>
+    </div>
+    <h5 style="margin-top: 20px;">Описание</h5>
+    <p>
+        Позже здесь появится описание книги...<br>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed arcu ullamcorper, tincidunt lorem euismod, dapibus nunc. Vivamus molestie ipsum sit amet rutrum laoreet. Nulla imperdiet eros vel vehicula posuere. Donec maximus elit sit amet nunc cursus, ac scelerisque justo malesuada. Morbi interdum, purus sit amet fringilla sagittis, elit sem efficitur eros, non porta sem orci ut eros. Quisque rhoncus neque vitae magna luctus, at consectetur enim ultricies. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.<br>
+        Praesent porta luctus mauris, nec sollicitudin erat imperdiet ac. Fusce convallis, nibh ut pulvinar sollicitudin, lacus elit dictum sem, eget pellentesque lectus lorem nec turpis. Mauris in blandit tortor. Donec libero mi, sollicitudin et justo eget, sodales auctor metus. Nam in magna placerat, faucibus massa congue, aliquam odio. Curabitur nec est ut nisi dictum ultricies eget in dolor. Suspendisse eu posuere est. Donec accumsan neque ex, eu interdum augue consectetur a. In est leo, lacinia at mattis non, ultrices vitae massa. Pellentesque ultricies in dolor in dictum. Donec faucibus hendrerit finibus.<br>
+        Vestibulum convallis vestibulum diam, vel posuere ex vestibulum vel. Nullam lobortis facilisis eleifend. Sed sit amet ultrices ipsum. Integer justo lorem, ornare consectetur nisl eu, bibendum ullamcorper nibh. Nulla lacus ipsum, aliquam vehicula ligula eget, rhoncus facilisis neque. Nunc lacinia commodo tellus. Aenean quis dictum lorem, in facilisis diam. Maecenas tincidunt accumsan metus vitae lacinia. Vestibulum nec mi a dui cursus auctor. Quisque et pharetra sapien, nec porttitor felis.<br>
+        Quisque gravida vitae purus nec facilisis. Proin ac convallis erat. Phasellus libero risus, imperdiet at mi vitae, porttitor consequat lorem. Aenean ac justo id purus pulvinar varius nec nec quam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris sit amet ex tincidunt, laoreet leo a, feugiat est. Etiam vel euismod arcu, in interdum urna. Nullam cursus congue feugiat. Morbi nec est ipsum. Etiam porta metus sed neque vehicula feugiat. Ut libero mi, pellentesque at suscipit vitae, maximus ut eros. Etiam tincidunt laoreet mi et tincidunt. Maecenas molestie gravida sapien, at eleifend sem maximus a. Nulla facilisi. Nam interdum magna id nibh vehicula tincidunt.<br>
+        Sed quis facilisis justo. Duis id pellentesque felis. Donec sit amet cursus enim. Morbi congue mi velit. Nullam quis efficitur sem. Pellentesque imperdiet justo nisi, eu hendrerit leo rutrum bibendum. Sed ornare urna est, et dignissim metus sagittis nec. Cras in ornare enim. Pellentesque non libero dictum, finibus sapien nec, sodales sapien. Pellentesque interdum placerat tortor eget iaculis. Etiam eget purus posuere mauris dictum porttitor nec non magna. Pellentesque orci tellus, semper sed dictum nec, tincidunt quis orci. Nunc nisl odio, aliquam in eros non, gravida suscipit massa. Suspendisse lacinia, neque vel tincidunt fringilla, odio justo finibus velit, vel venenatis nunc nisi eget lacus. Aenean faucibus euismod urna eu accumsan.<br>
+    </p>
+
+    <hr style="border: 3px;">
+
+    <h5 style="margin-top: 20px;">Комментарии читателей</h5>
+    <p>
+        Позже здесь появятся комментарии...
+    </p>
+
+</div>
+
+{% endblock content %}

@@ -1,3 +1,5 @@
+{% load static %}
+
 <div class="header" style="min-height: 300; background: rgb(146, 211, 241); padding: 10px 0px 30px 0px; margin-bottom: 30px;">
     <div class="container">
         <div class="row">
@@ -40,7 +42,7 @@
                         </div>
                         <div class="col-1" style="padding-left: 0;">
                             <button type='submit' class='btn' style="padding-left: 0;">
-                                <img src="static/img/loupe.png" alt="loupe" height="25">
+                                <img src="{% static 'img/loupe.png' %}" alt="loupe" height="25">
                             </button>
                         </div>
                     </div>
@@ -50,7 +52,7 @@
             <div class="col-3 align-self-center">
                 <div class="row">
                     <div class="col-6">
-                        <img src="static\img\basket.png" alt="basket" height="80">
+                        <img src="{% static 'img\basket.png' %}" alt="basket" height="80">
                     </div>
                     <div class="col-6">
                         Корзина<br>

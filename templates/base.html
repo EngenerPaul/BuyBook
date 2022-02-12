@@ -19,8 +19,8 @@
 
     {% include 'inc/_header.html' %}
 
-    <div class="container" style="background-color: rgb(224, 240, 156);">
-        INFO: {{ request.user }}
+    <div class="container" style="background-color: rgb(224, 240, 156); margin-bottom: 15px;">
+        INFO: {{ request.user }} | INFO: {{ request.user.id }}
     </div>
 
     {% block content %}

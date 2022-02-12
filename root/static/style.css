@@ -6,3 +6,11 @@ body {
 .header .container .row .col-md-3 .nav .nav-item .nav-link {
     padding: 0px 16px
 }
+
+.card .card-title a {
+    /* font-family: Geometri    a; */
+    /* font-size: 28px; */
+    font-weight: 700;
+    text-decoration: none;
+    color: #061e37;
+}

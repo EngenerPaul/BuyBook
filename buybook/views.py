@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -26,6 +26,13 @@ class Home(ListView):
         context['genres'] = Genre.objects.all()
         return context
 
+class BookDetail(DetailView):
+    model = Book
+    template_name = 'buybook/bookdetail.html'
+    context_object_name = 'book'
+
+    def get_succes_url(self):
+        return reverse_lazy('book_detail', kwargs={'slug': self.get_object.slug})
 
 # Authentication
 class CustomLoginView(LoginView):
@@ -33,7 +40,7 @@ class CustomLoginView(LoginView):
     form_class = AuthUserForm
     success_url = reverse_lazy('home')
 
-    # success_url does't work
+    # because success_url variable does't work
     def get_success_url(self):
         return self.success_url
 
