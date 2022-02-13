@@ -2,7 +2,9 @@ from django.urls import reverse
 from django.db import models
 from django.db.models import CharField, ForeignKey, ManyToManyField, \
                              ImageField, IntegerField, FloatField, \
-                             SlugField, TextField
+                             SlugField, TextField, DateTimeField, CASCADE
+from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -51,7 +53,7 @@ class Book(models.Model):
     cover_type = CharField(max_length=20, blank=True, verbose_name='Тип обложки')
     book_format = CharField(max_length=30, blank=True, verbose_name='Формат')  # размер
     weight = FloatField(blank=True, verbose_name='Вес')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Добавлено на сайт')
+    created_at = DateTimeField(auto_now_add=True, verbose_name='Добавлено на сайт')
 
     cost = IntegerField(verbose_name='Стоимость')
     discount = IntegerField(default=0, verbose_name='Скидка')  # проценты
@@ -70,4 +72,16 @@ class Book(models.Model):
 
 
 class Comment(models.Model):
-    pass
+    user = ForeignKey(User, on_delete=CASCADE, verbose_name='Автор комментария', related_name='comments')
+    book = ForeignKey(Book, on_delete=CASCADE, verbose_name='Книга', related_name='comments')
+    text = TextField(max_length=1000, verbose_name='Комментарий')
+    estimate = IntegerField(verbose_name='Оценка', validators=(MinValueValidator(0), MaxValueValidator(5)))
+    created_at = DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ('-created_at', )
+
+    def __str__(self):
+        return "The Comment class: " + self.user

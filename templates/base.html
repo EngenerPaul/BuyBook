@@ -23,8 +23,11 @@
         INFO: {{ request.user }} | INFO: {{ request.user.id }}
     </div>
 
-    {% block content %}
-    {% endblock content %}
+    <div class="container" style="margin-bottom: 30px;">
+        {% block content %}
+        {% endblock content %}
+    </div>
+    
     
 </body>
 </html>

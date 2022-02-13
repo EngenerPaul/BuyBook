@@ -1,6 +1,8 @@
+from turtle import width
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from .models import Comment
 
 
 # Authentication
@@ -59,3 +61,23 @@ class RegisterUserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text', 'estimate', )
+        labels = {
+            'text': 'Оставьте свой комментарий',
+            'estimate': 'Ваша оценка',
+        }
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Ваш комментарий...'
+            }),
+            'estimate': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'style': 'width: 200px',
+            })
+        }

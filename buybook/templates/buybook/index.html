@@ -3,49 +3,46 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
+<div class="row">
 
-        <div class="col-2" style="min-width: 200px;">
-            <h4 style="text-align: center;">Genres</h4>
-            <hr>
-            <div style="margin-left: 10px;">
-                {% for genre in genres %}
-                <p>{{ genre.title }}</p>
-                {% endfor %}
-            </div>
+    <div class="col-2" style="min-width: 200px;">
+        <h4 style="text-align: center;">Genres</h4>
+        <hr>
+        <div style="margin-left: 10px;">
+            {% for genre in genres %}
+            <p>{{ genre.title }}</p>
+            {% endfor %}
         </div>
-
-        <div class="col-9">
-            <div class="row">
-
-                {% for book in all_books %}
-                <div class="col-4">
-                    <div class="card h-100">
-                        <a href="{{ book.get_absolute_url }}" style="margin: auto; margin-top: 10px;">
-                            <img src="{{ book.cover.url }}" alt="cover" height=300>
-                        </a>
-                        <div class="card-body">
-                            <h5 class="card-title mb-4">
-                                <a href="{{ book.get_absolute_url }}">
-                                    {{ book.title }}
-                                </a>
-                            </h5>
-                            <h6 class="card-subtitle mb-3 text-muted">{{ book.author.full_name }}</h6>
-                            
-                            {% include 'buybook/buttons.html' %}
-                            
-                        </div>
-
-                    </div>
-                  </div>
-                {% endfor %}
-    
-            </div>
-        </div>
-
     </div>
-    
-</div>   
+
+    <div class="col-9">
+        <div class="row">
+
+            {% for book in all_books %}
+            <div class="col-4">
+                <div class="card h-100">
+                    <a href="{{ book.get_absolute_url }}" style="margin: auto; margin-top: 10px;">
+                        <img src="{{ book.cover.url }}" alt="cover" height=300>
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">
+                            <a href="{{ book.get_absolute_url }}">
+                                {{ book.title }}
+                            </a>
+                        </h5>
+                        <h6 class="card-subtitle mb-3 text-muted">{{ book.author.full_name }}</h6>
+                        
+                        {% include 'buybook/buttons.html' %}
+                        
+                    </div>
+
+                </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}
