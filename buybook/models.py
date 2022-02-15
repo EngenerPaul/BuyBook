@@ -23,6 +23,7 @@ class Author(models.Model):
     def get_absolute_url(self):
         return reverse('by_authors', kwargs={'slug': self.slug})
 
+
 class Genre(models.Model):
     title = CharField(max_length=30, verbose_name='Жанр')
     slug = SlugField(max_length=30, unique=True, verbose_name='Url')
@@ -85,3 +86,31 @@ class Comment(models.Model):
 
     def __str__(self):
         return "The Comment class: " + self.user
+
+
+class Basket(models.Model):
+    book_id = ForeignKey(Book, on_delete=CASCADE, verbose_name='Книга', related_name='basket_books')
+    user_id = ForeignKey(User, on_delete=CASCADE, verbose_name='Пользователь', related_name='basket_user')
+    quantity = IntegerField(default=1, verbose_name='Количество', validators=(MinValueValidator(0), MaxValueValidator(50)))
+    created_at = DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
+    class Meta:
+        verbose_name = 'Корзина'
+        ordering = ('user_id', 'book_id', )
+
+    def __str__(self):
+        return f"The Basket class: id = {self.pk}"
+
+
+class Marked(models.Model):
+    book_id = ForeignKey(Book, on_delete=CASCADE, verbose_name='Книга', related_name='marked_books')
+    user_id = ForeignKey(User, on_delete=CASCADE, verbose_name='Пользователь', related_name='marked_user')
+    created_at = DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+
+    class Meta:
+        verbose_name = 'Закладки'
+        ordering = ('user_id', 'book_id', )
+
+    def __str__(self):
+        return f"The Marked class: id = {self.pk}"
+

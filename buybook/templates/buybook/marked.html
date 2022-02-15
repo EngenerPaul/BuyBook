@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h3 style="margin-bottom: 25px;">Закладки</h3>
+
+<div class="row" style="text-align: center;margin-bottom: 10px;">
+    <div class="col-10">
+        <h5>Название книги</h5>
+    </div>
+    <div class="col-2"></div>
+</div>
+
+{% for record in marked_books %}
+
+<div class="card" style="padding: 10px; margin-bottom: 15px;">
+    <div class="row">
+        <div class="col-10">
+            <h5>
+                <a href="{{ record.book_id.get_absolute_url }}">{{ record.book_id.title }}</a>
+            </h5>
+        </div>
+        <div class="col-2">
+            <div class="row">
+                <div class="col-6">
+                    <form id="create_basket_form_{{book.pk}}" action="{% url 'move_to_basket' record.book_id.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; ">
+                            <img src="{% static 'img/minibasket.png' %}" alt="minibasket" height="20">
+                        </button>
+                    </form>
+                </div>
+                <div class="col-6">
+                    <form id="delete_{{book.pk}}" action="{% url 'delete_marked' record.book_id.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type='submit' class='btn btn-danger btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                            <img src="{% static 'img/white-cross.png' %}" alt="delete" width="20px">
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock content %}

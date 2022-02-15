@@ -1,24 +1,21 @@
+from dataclasses import field
 from urllib import request
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, CreateView, DetailView, View
 from django.views.generic.edit import FormMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
-from .models import Book, Author, Genre
+from .models import Book, Author, Genre, Basket, Marked
 from .forms import AuthUserForm, RegisterUserForm, CommentForm
 
-def first_func(request):
-    template_name = 'buybook/index.html'
-    content = {
-        'hello' : 'hello world'
-    }
-    return render(request, template_name, content)
 
 class Home(ListView):
+    """Show a list of books on the main page"""
+
     model = Book
     template_name = 'buybook/index.html'
     context_object_name = 'all_books'
@@ -29,6 +26,8 @@ class Home(ListView):
         return context
 
 class BookDetail(DetailView, FormMixin):
+    """Show details of the book"""
+
     model = Book
     template_name = 'buybook/bookdetail.html'
     context_object_name = 'book'
@@ -67,8 +66,13 @@ class BookDetail(DetailView, FormMixin):
         return context
 
 
-# Authentication
+########################################################################
+#####         Authentication, Registration and LogOut              #####
+########################################################################
+
 class CustomLoginView(LoginView):
+    """Authentication"""
+
     template_name = "buybook/login.html"
     form_class = AuthUserForm
     success_url = reverse_lazy('home')
@@ -77,8 +81,9 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return self.success_url
 
-# Registration
 class CustomRegistration(CreateView):
+    """Registration"""
+
     model = User
     template_name = 'buybook/registration.html'
     form_class = RegisterUserForm
@@ -96,4 +101,97 @@ class CustomRegistration(CreateView):
         return form_valid
 
 class CustomLogOut(LogoutView):
+    """LogOut"""
+
     next_page = reverse_lazy('home')
+
+
+########################################################################
+#####    Basket and marked page views as well as their buttons:    #####
+#####  Purchase and mark buttons from homepage, basket and marked  #####
+########################################################################
+
+# button Купить - create new record in the Basket
+class CreateBasketBook(View):
+    """The button for purchase on homepage"""
+
+    # the form method in buttons.html is "post"
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        if not Basket.objects.filter(book_id=book_obj, user_id=user_obj).exists():
+            Basket.objects.create(book_id=book_obj, user_id=user_obj)
+            # If the object exists then nothing happens
+        return redirect('home')
+
+# List of book in basket
+class BasketView(ListView):
+    """Display list of book in the basket-page"""
+
+    model = Basket
+    template_name = 'buybook/basket.html'
+    context_object_name = 'basket_books'
+
+class Move_to_Marked_Button(View):
+    """This button move book from basket list to marked list"""
+
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        if not Marked.objects.filter(book_id=book_obj, user_id=user_obj).exists():
+            Marked.objects.create(book_id=book_obj, user_id=user_obj)
+        Basket.objects.get(book_id=book_obj, user_id=user_obj).delete()
+        return redirect('basket_url')
+
+class Delete_from_basket_Button(View):
+    """This button delete book from basket list"""
+
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        Basket.objects.get(book_id=book_obj, user_id=user_obj).delete()
+        return redirect('basket_url')
+
+
+
+# button Купить - create new record in the Basket
+class CreateMarkedBook(View):
+    """The button for marking on homepage"""
+
+    # the form method in buttons.html is "post"
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        if not Marked.objects.filter(book_id=book_obj, user_id=user_obj).exists():
+            Marked.objects.create(book_id=book_obj, user_id=user_obj)
+            # If the object exists then nothing happens
+        return redirect('home')
+
+# List of book in basket
+class MarkedView(ListView):
+    """Display list of book in the marked-page"""
+
+    model = Marked
+    template_name = 'buybook/marked.html'
+    context_object_name = 'marked_books'
+
+class Move_to_Basket_Button(View):
+    """This button move book from marked list to basket list"""
+
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        if not Basket.objects.filter(book_id=book_obj, user_id=user_obj).exists():
+            Basket.objects.create(book_id=book_obj, user_id=user_obj)
+        Marked.objects.get(book_id=book_obj, user_id=user_obj).delete()
+        return redirect('marked_url')
+
+class Delete_from_marked_Button(View):
+    """This button delete book from marked list"""
+
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        Marked.objects.get(book_id=book_obj, user_id=user_obj).delete()
+        return redirect('marked_url')
+
