@@ -10,7 +10,20 @@
         <hr>
         <div style="margin-left: 10px;">
             {% for genre in genres %}
-            <p>{{ genre.title }}</p>
+                {% if title == genre %}
+                <p>
+                    <a href="{{ genre.get_absolute_url }}">
+                        <strong><h5>{{ genre.title }}</h5></strong>
+                    </a>
+                </p>
+                {% else %}
+                <p>
+                    <a href="{{ genre.get_absolute_url }}" style="text-decoration: none; color: black;">
+                        <strong>{{ genre.title }}</strong>
+                        
+                    </a>
+                </p>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
@@ -18,7 +31,7 @@
     <div class="col-9">
         <div class="row">
 
-            {% for book in all_books %}
+            {% for book in book_list %}
             <div class="col-4">
                 <div class="card h-100">
                     <a href="{{ book.get_absolute_url }}" style="margin: auto; margin-top: 10px;">

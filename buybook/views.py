@@ -18,12 +18,13 @@ class Home(ListView):
 
     model = Book
     template_name = 'buybook/index.html'
-    context_object_name = 'all_books'
+    context_object_name = 'book_list'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['genres'] = Genre.objects.all()
         return context
+
 
 class BookDetail(DetailView, FormMixin):
     """Show details of the book"""
@@ -57,13 +58,30 @@ class BookDetail(DetailView, FormMixin):
 
     # needed for refresh the page after saving the form
     def get_success_url(self, **kwargs):
-        return reverse_lazy('book_detail', kwargs={'slug': self.get_object().slug})
+        return reverse_lazy('book_detail_page', kwargs={'slug': self.get_object().slug})
 
     # needed for display list of comments
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['all_comments'] = self.object.comments.all()  # comments is a foreign key (related_name) of Comment model 
         return context
+
+
+class BookByGenre(ListView):
+    """Show books by genres"""
+
+    template_name = 'buybook/index.html'
+    context_object_name = 'book_list'
+
+    def get_queryset(self):
+        return Book.objects.filter(genre__slug=self.kwargs['slug'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = Genre.objects.get(slug=self.kwargs['slug'])
+        context['genres'] = Genre.objects.all()
+        return context
+
 
 
 ########################################################################
@@ -104,6 +122,7 @@ class CustomLogOut(LogoutView):
     """LogOut"""
 
     next_page = reverse_lazy('home')
+
 
 
 ########################################################################

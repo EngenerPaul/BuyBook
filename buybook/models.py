@@ -20,8 +20,8 @@ class Author(models.Model):
     def __str__(self):
         return "The Author class: " + self.full_name
     
-    def get_absolute_url(self):
-        return reverse('by_authors', kwargs={'slug': self.slug})
+    # def get_absolute_url(self):
+    #     return reverse('by_authors', kwargs={'slug': self.slug})
 
 
 class Genre(models.Model):
@@ -37,7 +37,7 @@ class Genre(models.Model):
         return "The Genre class: " + self.title
 
     def get_absolute_url(self):
-        return reverse('by_genres', kwargs={"slug": self.slug})
+        return reverse('genre_page', kwargs={"slug": self.slug})
 
 
 class Book(models.Model):
@@ -69,7 +69,7 @@ class Book(models.Model):
         return "The Book class: " + self.title
 
     def get_absolute_url(self):
-        return reverse('book_detail', kwargs={'slug': self.slug})
+        return reverse('book_detail_page', kwargs={'slug': self.slug})
 
 
 class Comment(models.Model):

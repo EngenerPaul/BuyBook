@@ -13,7 +13,7 @@
         <p>
             Жанры: 
             {% for genre in book.genre.all %}
-            {{ genre.title }}
+            <a href="{{ genre.get_absolute_url }}">{{ genre.title }}</a>
             {% endfor %}
         </p>
         <hr>
@@ -58,7 +58,7 @@
 
 <hr style="border: 3px;">
 
-<h5 style="margin-top: 20px;">Комментарии читателей</h5>
+<h4 style="margin: 20px 0px;">Комментарии читателей</h4>
 
 <div style="width: 600px">
     <form method="post">
@@ -69,9 +69,7 @@
 </div>
 <div style="width: 600px">
         {% if all_comments %}
-        
             {% for comment in all_comments %}
-            
                 <div class="row" style="margin-top: 30px">
                     <div class="col-auto">
                         <h5>{{ comment.user }}</h5>
@@ -81,15 +79,10 @@
                     </div>
                 </div>
                 <div class="card" style="padding: 10px;">{{ comment.text }}</div>
-                
             {% endfor %}
-        
         {% else %}
-        <p>Отзывов нет</p>
+        <p class="text-secondary" style="margin-top: 20px;">К сожалению, отзывов нет...</p>
         {% endif %}
-        
-    
 </div>
-
 
 {% endblock content %}
