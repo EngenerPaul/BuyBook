@@ -21,7 +21,9 @@ class Home(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['genres'] = Genre.objects.all()
+        context['genres'] = Genre.objects.all() # Show list of genres
+        context['buy_url'] = 'add_to_basket'  # url-adress for button "buy"
+        context['mark_url'] = 'add_to_marked'  # url-adress for button "mark"
         return context
 
 
@@ -63,6 +65,8 @@ class BookDetail(DetailView, FormMixin):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['all_comments'] = self.object.comments.all()  # comments is a foreign key (related_name) of Comment model 
+        context['buy_url'] = 'add_to_basket_from_detail'  # url-adress for button "buy"
+        context['mark_url'] = 'add_to_marked_from_detail'  # url-adress for button "mark"
         return context
 
 
@@ -83,7 +87,7 @@ class BookByGenre(ListView):
 
 class Search(ListView):
     """Search books by title and author"""
-    
+
     template_name = 'buybook/index.html'
     context_object_name = 'book_list'
 
@@ -160,6 +164,18 @@ class CreateBasketBook(View):
             # If the object exists then nothing happens
         return redirect('home')
 
+class CreateBasketBook_BDP(View):
+    """The button for purchase in book detail page (BDP)"""
+
+    # the form method in buttons.html is "post"
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        if not Basket.objects.filter(book_id=book_obj, user_id=user_obj).exists():
+            Basket.objects.create(book_id=book_obj, user_id=user_obj)
+            # If the object exists then nothing happens
+        return redirect('book_detail_page', slug=book_obj.slug)
+
 # List of book in basket
 class BasketView(ListView):
     """Display list of book in the basket-page"""
@@ -177,7 +193,7 @@ class Move_to_Marked_Button(View):
         if not Marked.objects.filter(book_id=book_obj, user_id=user_obj).exists():
             Marked.objects.create(book_id=book_obj, user_id=user_obj)
         Basket.objects.get(book_id=book_obj, user_id=user_obj).delete()
-        return redirect('basket_url')
+        return redirect('basket_page')
 
 class Delete_from_basket_Button(View):
     """This button delete book from basket list"""
@@ -186,7 +202,7 @@ class Delete_from_basket_Button(View):
         book_obj = Book.objects.get(pk=pk)
         user_obj = request.user
         Basket.objects.get(book_id=book_obj, user_id=user_obj).delete()
-        return redirect('basket_url')
+        return redirect('basket_page')
 
 
 
@@ -202,6 +218,18 @@ class CreateMarkedBook(View):
             Marked.objects.create(book_id=book_obj, user_id=user_obj)
             # If the object exists then nothing happens
         return redirect('home')
+
+class CreateMarkedBook_BDP(View):
+    """The button for marking in book detail page (BDP)"""
+
+    # the form method in buttons.html is "post"
+    def post(self, request, pk, *args, **kwargs):
+        book_obj = Book.objects.get(pk=pk)
+        user_obj = request.user
+        if not Marked.objects.filter(book_id=book_obj, user_id=user_obj).exists():
+            Marked.objects.create(book_id=book_obj, user_id=user_obj)
+            # If the object exists then nothing happens
+        return redirect('book_detail_page', slug=book_obj.slug)
 
 # List of book in basket
 class MarkedView(ListView):
@@ -220,7 +248,7 @@ class Move_to_Basket_Button(View):
         if not Basket.objects.filter(book_id=book_obj, user_id=user_obj).exists():
             Basket.objects.create(book_id=book_obj, user_id=user_obj)
         Marked.objects.get(book_id=book_obj, user_id=user_obj).delete()
-        return redirect('marked_url')
+        return redirect('marked_page')
 
 class Delete_from_marked_Button(View):
     """This button delete book from marked list"""
@@ -229,5 +257,5 @@ class Delete_from_marked_Button(View):
         book_obj = Book.objects.get(pk=pk)
         user_obj = request.user
         Marked.objects.get(book_id=book_obj, user_id=user_obj).delete()
-        return redirect('marked_url')
+        return redirect('marked_page')
 

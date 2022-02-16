@@ -11,26 +11,15 @@ class AuthUserForm(AuthenticationForm, forms.ModelForm):
         model = User
         fields = ('username', 'password')
         
-        # doesn't work!
-        # labels = {
-        #     'username': 'Name', 
-        #     'password': 'Password',
-        # }
-        # widgets = {
-        #     'username':forms.TextInput(attrs={
-        #         'class': 'form-control', 
-        #         'placeholder': 'Please enter your name'
-        #     }),
-        #     'password':forms.TextInput(attrs={
-        #         'class': 'form-control', 
-        #         'placeholder': 'Please enter your password'
-        #     })
-        # }
+        # labels = {...}  doesn't work!
+        # widgets = {...}  doesn't work!
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields['username'].widget.attrs['placeholder'] = 'Укажите Ваше имя'
+            self.fields['password'].widget.attrs['placeholder'] = 'Введите пароль'
 
 # Registration
 class RegisterUserForm(forms.ModelForm):
@@ -38,17 +27,17 @@ class RegisterUserForm(forms.ModelForm):
         model = User
         fields = ('username', 'password')
         labels = {
-            'username': 'Name', 
-            'password': 'Password',
+            'username': 'Имя пользователя', 
+            'password': 'Пароль',
         }
         widgets = {
             'username':forms.TextInput(attrs={
                 'class': 'form-control', 
-                'placeholder': 'Please enter your name'
+                'placeholder': 'Укажите Ваше имя'
             }),
             'password':forms.TextInput(attrs={
                 'class': 'form-control', 
-                'placeholder': 'Please enter your password'
+                'placeholder': 'Введите пароль'
             })
         }
     

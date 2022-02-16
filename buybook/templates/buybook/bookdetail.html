@@ -61,11 +61,19 @@
 <h4 style="margin: 20px 0px;">Комментарии читателей</h4>
 
 <div style="width: 600px">
-    <form method="post">
+    {% if request.user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+        </form>
+    {% else %}
+    <form method="get">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block">Отправить</button>
+        <a type="submit" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#is_not_authenticated">Отправить</a>
     </form>
+    {% endif %}
 </div>
 <div style="width: 600px">
         {% if all_comments %}

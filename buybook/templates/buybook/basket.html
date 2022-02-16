@@ -3,53 +3,62 @@
 
 {% block content %}
 
-<h3 style="margin-bottom: 25px;">Книги в корзине</h3>
+<h3 style="margin-bottom: 25px;">Корзина</h3>
 
-<div class="row" style="text-align: center;margin-bottom: 10px;">
-    <div class="col-8">
-        <h5>Название книги</h5>
-    </div>
-    <div class="col-2">
-        <h5>Количество</h5>
-    </div>
-    <div class="col-2"></div>
-</div>
-
-{% for record in basket_books %}
-
-<div class="card" style="padding: 10px; margin-bottom: 15px;">
-    <div class="row">
+{% if not request.user.is_authenticated %}
+    <h5 class="text-muted">
+        Для просмотра списка покупок Вам необходимо 
+        <a href="{% url 'registration_page' %}">зарегистрироваться</a> и
+        <a href="{% url 'login_page' %}">пройти авторизацию</a>!
+    </h5>
+{% elif basket_books %}
+    <div class="row" style="text-align: center;margin-bottom: 10px;">
         <div class="col-8">
-            <h5>
-                <a href="{{ record.book_id.get_absolute_url }}">{{ record.book_id.title }}</a>
-            </h5>
-        </div>
-        <div class="col-2" style="text-align: center;">
-            {{ record.quantity }}
+            <h5>Название книги</h5>
         </div>
         <div class="col-2">
-            <div class="row">
-                <div class="col-6">
-                    <form id="goto_marked_{{book.pk}}" action="{% url 'move_to_marked' record.book_id.pk %}" method="post">
-                        {% csrf_token %}
-                        <button type='submit' class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
-                            <img src="{% static 'img/bookmark.png' %}" alt="in_marked" width="20px">
-                        </button>
-                    </form>
-                </div>
-                <div class="col-6">
-                    <form id="delete_{{book.pk}}" action="{% url 'delete_basket' record.book_id.pk %}" method="post">
-                        {% csrf_token %}
-                        <button type='submit' class='btn btn-danger btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
-                            <img src="{% static 'img/white-cross.png' %}" alt="delete" width="20px">
-                        </button>
-                    </form>
+            <h5>Количество</h5>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    {% for record in basket_books %}
+    <div class="card" style="padding: 10px; margin-bottom: 15px;">
+        <div class="row">
+            <div class="col-8">
+                <h5>
+                    <a href="{{ record.book_id.get_absolute_url }}">{{ record.book_id.title }}</a>
+                </h5>
+            </div>
+            <div class="col-2" style="text-align: center;">
+                {{ record.quantity }}
+            </div>
+            <div class="col-2">
+                <div class="row">
+                    <div class="col-6">
+                        <form id="goto_marked_{{book.pk}}" action="{% url 'move_to_marked' record.book_id.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type='submit' class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                                <img src="{% static 'img/bookmark.png' %}" alt="in_marked" width="20px">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-6">
+                        <form id="delete_{{book.pk}}" action="{% url 'delete_basket' record.book_id.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type='submit' class='btn btn-danger btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                                <img src="{% static 'img/white-cross.png' %}" alt="delete" width="20px">
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-{% endfor %}
+    {% endfor %}
+    
+{% else %}
+    <h5 class="text-muted">Ваш список покупок пуст</h5>
+{% endif %}
 
 {% endblock content %}
