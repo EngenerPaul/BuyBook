@@ -12,44 +12,45 @@
         <a href="{% url 'login_page' %}">пройти авторизацию</a>!
     </h5>
 {% elif marked_books %}
-    <div class="row" style="text-align: center;margin-bottom: 10px;">
-        <div class="col-10">
-            <h5>Название книги</h5>
-        </div>
-        <div class="col-2"></div>
-    </div>
-
-    {% for record in marked_books %}
-    <div class="card" style="padding: 10px; margin-bottom: 15px;">
-        <div class="row">
-            <div class="col-10">
-                <h5>
+<div class="table">
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th style="width: 90%; text-align: center;" ><h5>Название книги</h5></th>
+                <th style="width: 10%; min-width: 100px;" ></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in marked_books %}
+            <tr>
+                <th style="vertical-align: middle;">
                     <a href="{{ record.book_id.get_absolute_url }}">{{ record.book_id.title }}</a>
-                </h5>
-            </div>
-            <div class="col-2">
-                <div class="row">
-                    <div class="col-6">
-                        <form id="create_basket_form_{{book.pk}}" action="{% url 'move_to_basket' record.book_id.pk %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; ">
-                                <img src="{% static 'img/minibasket.png' %}" alt="minibasket" height="20">
-                            </button>
-                        </form>
+                </th>
+                <th style="vertical-align: middle;">
+                    <div class="row">
+                        <div class="col-6">
+                            <form id="create_basket_form_{{book.pk}}" action="{% url 'move_to_basket' record.book_id.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class='btn btn-primary btn-block' style="padding: 6px 12px 6px 6px; width: 100%; ">
+                                    <img src="{% static 'img/minibasket.png' %}" alt="minibasket" height="20">
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-6">
+                            <form id="delete_{{book.pk}}" action="{% url 'delete_marked' record.book_id.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type='submit' class='btn btn-danger btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                                    <img src="{% static 'img/white-cross.png' %}" alt="delete" width="20px">
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <form id="delete_{{book.pk}}" action="{% url 'delete_marked' record.book_id.pk %}" method="post">
-                            {% csrf_token %}
-                            <button type='submit' class='btn btn-danger btn-block' style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
-                                <img src="{% static 'img/white-cross.png' %}" alt="delete" width="20px">
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+                </th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
     
 {% else %}
     <h5 class="text-muted">Ваш список заметок пуст</h5>

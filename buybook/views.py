@@ -1,7 +1,8 @@
+from typing import List
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, View
+from django.views.generic import ListView, CreateView, DetailView, View, UpdateView
 from django.views.generic.edit import FormMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
@@ -9,7 +10,8 @@ from django.contrib.auth import authenticate, login
 from django.db.models import Q
 
 from .models import Book, Author, Genre, Basket, Marked
-from .forms import AuthUserForm, RegisterUserForm, CommentForm
+from .forms import AuthUserForm, RegisterUserForm, CommentForm, BasketForm
+
 
 
 class Home(ListView):
@@ -182,10 +184,37 @@ class BasketView(ListView):
 
     template_name = 'buybook/basket.html'
     context_object_name = 'basket_books'
+    form_class = BasketForm
+    success_url = reverse_lazy('basket')
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return Basket.objects.filter(user_id=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['quantity'] = 0
+        context['cost'] = 0
+        for obj in Basket.objects.filter(user_id=self.request.user):
+            context['quantity'] += obj.quantity
+            context['cost'] += obj.book_id.cost * obj.quantity
+        return context
+
+class ChangeQuantity(View):
+    """This class changes quantity books in the basket"""
+
+    def post(self, request, pk, *args, **kwargs):
+        obj_basket_record = Basket.objects.get(pk=pk)
+        new_value = int(request.POST[str(pk)])
+        max_value = Basket.objects.get(pk=pk).book_id.units_in_stock
+        
+        if new_value > max_value:
+            obj_basket_record.quantity = max_value
+        elif new_value > 0:
+            obj_basket_record.quantity = new_value  
+        
+        obj_basket_record.save()
+        return redirect('basket_page')
 
 class Move_to_Marked_Button(View):
     """This button move book from basket list to marked list"""

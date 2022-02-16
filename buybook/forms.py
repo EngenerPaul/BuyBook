@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Comment
+from .models import Comment, Basket
 
 
 # Authentication
@@ -69,3 +69,8 @@ class CommentForm(forms.ModelForm):
                 'style': 'width: 200px',
             })
         }
+
+class BasketForm(forms.ModelForm):
+    class Meta: 
+        model = Basket
+        fields = ('quantity', )
