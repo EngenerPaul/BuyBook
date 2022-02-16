@@ -184,7 +184,8 @@ class BasketView(ListView):
     context_object_name = 'basket_books'
 
     def get_queryset(self):
-        return Basket.objects.filter(user_id=self.request.user)
+        if self.request.user.is_authenticated:
+            return Basket.objects.filter(user_id=self.request.user)
 
 class Move_to_Marked_Button(View):
     """This button move book from basket list to marked list"""
@@ -241,7 +242,8 @@ class MarkedView(ListView):
     context_object_name = 'marked_books'
 
     def get_queryset(self):
-        return Marked.objects.filter(user_id=self.request.user)
+        if self.request.user.is_authenticated:
+            return Marked.objects.filter(user_id=self.request.user)
 
 class Move_to_Basket_Button(View):
     """This button move book from marked list to basket list"""
