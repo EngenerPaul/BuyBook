@@ -180,9 +180,11 @@ class CreateBasketBook_BDP(View):
 class BasketView(ListView):
     """Display list of book in the basket-page"""
 
-    model = Basket
     template_name = 'buybook/basket.html'
     context_object_name = 'basket_books'
+
+    def get_queryset(self):
+        return Basket.objects.filter(user_id=self.request.user)
 
 class Move_to_Marked_Button(View):
     """This button move book from basket list to marked list"""
@@ -235,9 +237,11 @@ class CreateMarkedBook_BDP(View):
 class MarkedView(ListView):
     """Display list of book in the marked-page"""
 
-    model = Marked
     template_name = 'buybook/marked.html'
     context_object_name = 'marked_books'
+
+    def get_queryset(self):
+        return Marked.objects.filter(user_id=self.request.user)
 
 class Move_to_Basket_Button(View):
     """This button move book from marked list to basket list"""
