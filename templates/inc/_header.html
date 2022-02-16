@@ -35,10 +35,10 @@
             </div>
 
             <div class="col-6 align-self-center">
-                <form action="" method="get">
+                <form action="{% url 'search' %}" method="get">
                     <div class="row">
                         <div class="col-9">
-                            <input type="text" name="s" class="form-control" id="" placeholder="Поиск...">
+                            <input type="text" name="view_variable" class="form-control" id="search" placeholder="Поиск...">
                         </div>
                         <div class="col-1" style="padding-left: 0;">
                             <button type='submit' class='btn' style="padding-left: 0;">

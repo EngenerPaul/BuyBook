@@ -1,13 +1,12 @@
-from dataclasses import field
-from urllib import request
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, View
 from django.views.generic.edit import FormMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.db.models import Q
 
 from .models import Book, Author, Genre, Basket, Marked
 from .forms import AuthUserForm, RegisterUserForm, CommentForm
@@ -82,6 +81,24 @@ class BookByGenre(ListView):
         context['genres'] = Genre.objects.all()
         return context
 
+class Search(ListView):
+    """Search books by title and author"""
+    
+    template_name = 'buybook/index.html'
+    context_object_name = 'book_list'
+
+    def get_queryset(self):
+        # view_variable take from template form: <input name="view_variable"...>
+        queryset = Book.objects.filter(
+            Q(title__icontains=self.request.GET.get('view_variable')) |
+            Q(author__full_name__icontains=self.request.GET.get('view_variable'))
+        )
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['genres'] = Genre.objects.all()
+        return context
 
 
 ########################################################################
