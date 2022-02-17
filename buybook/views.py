@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta
 
-from typing import List
-from urllib import request
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -222,6 +220,8 @@ class CustomLogOut(LogoutView):
     next_page = reverse_lazy('home')
 
 class Profile(DetailView):
+    """User profile"""
+
     model = User
     template_name = 'buybook/profile.html'
     context_object_name = 'user'

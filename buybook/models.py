@@ -97,7 +97,7 @@ class Comment(models.Model):
         ordering = ('-created_at', )
 
     def __str__(self):
-        return "The Comment class: " + self.user
+        return f"The Comment class: {self.user}"
 
 
 class Basket(models.Model):
@@ -113,6 +113,7 @@ class Basket(models.Model):
 
     class Meta:
         verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзина'
         ordering = ('user_id', 'book_id', )
 
     def __str__(self):
@@ -130,6 +131,7 @@ class Marked(models.Model):
 
     class Meta:
         verbose_name = 'Закладки'
+        verbose_name_plural = 'Закладки'
         ordering = ('user_id', 'book_id', )
 
     def __str__(self):
@@ -175,6 +177,7 @@ class OrderDetails(models.Model):
 
     class Meta:
         verbose_name = 'Детали заказов'
+        verbose_name_plural = 'Детали заказов'
         ordering = ('-order_id', 'book_id', )
 
     def __str__(self):
