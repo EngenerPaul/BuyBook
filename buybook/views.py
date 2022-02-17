@@ -195,9 +195,10 @@ class BasketView(ListView):
         context = super().get_context_data(**kwargs)
         context['quantity'] = 0
         context['cost'] = 0
-        for obj in Basket.objects.filter(user_id=self.request.user):
-            context['quantity'] += obj.quantity
-            context['cost'] += obj.book_id.cost * obj.quantity
+        if self.request.user.is_authenticated:
+            for obj in Basket.objects.filter(user_id=self.request.user):
+                context['quantity'] += obj.quantity
+                context['cost'] += obj.book_id.cost * obj.quantity
         return context
 
 class ChangeQuantity(View):
