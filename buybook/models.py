@@ -161,3 +161,21 @@ class Order(models.Model):
 
     def __str__(self):
         return f"The Order class: id = {self.pk}"
+
+class OrderDetails(models.Model):
+    """List of details (books quantities) about orders"""
+
+    order_id = ForeignKey(Order, on_delete=CASCADE, verbose_name='Заказ', 
+                          related_name='books')
+    book_id = ForeignKey(Book, on_delete=SET_NULL, null=True, verbose_name='Книга', 
+                         related_name='orders')
+    quantity = IntegerField(default=1, verbose_name='Количество', 
+                            validators=(MinValueValidator(0), MaxValueValidator(50)))
+    cost = IntegerField(verbose_name='Стоимость')
+
+    class Meta:
+        verbose_name = 'Детали заказов'
+        ordering = ('-order_id', 'book_id', )
+
+    def __str__(self):
+        return f"The OrderDetails class: id = {self.pk}"

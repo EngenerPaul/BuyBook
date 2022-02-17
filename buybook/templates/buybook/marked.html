@@ -16,7 +16,8 @@
     <table class="table table-striped">
         <thead class="thead-light">
             <tr>
-                <th style="width: 90%; text-align: center;" ><h5>Название книги</h5></th>
+                <th style="width: 80%; text-align: center;" ><h5>Название книги</h5></th>
+                <th style="width: 10%; text-align: center;" ><h5>Стоимость</h5></th>
                 <th style="width: 10%; min-width: 100px;" ></th>
             </tr>
         </thead>
@@ -25,6 +26,9 @@
             <tr>
                 <th style="vertical-align: middle;">
                     <a href="{{ record.book_id.get_absolute_url }}">{{ record.book_id.title }}</a>
+                </th>
+                <th style="text-align: center; vertical-align: middle;">
+                    {{ record.book_id.cost }} ₽
                 </th>
                 <th style="vertical-align: middle;">
                     <div class="row">

@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from typing import List
+from urllib import request
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
 
-from .models import Book, Author, Genre, Basket, Marked, Order
+from .models import Book, Author, Genre, Basket, Marked, Order, OrderDetails
 from .forms import AuthUserForm, RegisterUserForm, CommentForm, BasketForm, OrderForm
 
 
@@ -87,6 +88,8 @@ class BookByGenre(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = Genre.objects.get(slug=self.kwargs['slug'])
         context['genres'] = Genre.objects.all()
+        context['buy_url'] = 'add_to_basket'  # url-adress for button "buy"
+        context['mark_url'] = 'add_to_marked'  # url-adress for button "mark"
         return context
 
 
@@ -133,18 +136,36 @@ class OrderCreateView(CreateView):
         self.object.total_cost = int(request.POST['total_cost'])
         self.object.save()
 
-        """ A ManyToMany field is filled after create new object (in both models).
-        Futher we create list objects from another model - Basket.objects.filter(...).
-        Note: our model (Order) tied with Book model, because we use FpreignKey - book_id.
-        We scroll through Book objects 
-        and use the method add() to the ManyToMany field - self.object.book_id
-        Documentation: https://docs.djangoproject.com/en/4.0/topics/db/examples/many_to_many/"""
-
+        # enumerate books in basket...
         for basket_book in Basket.objects.filter(user_id=request.user):
+
+            """ A ManyToMany field is filled after create new object (in both models).
+            Futher we create list objects from another model - Basket.objects.filter(...).
+            Note: our model (Order) tied with Book model, because we use FpreignKey - book_id.
+            We scroll through Book objects 
+            and use the method add() to the ManyToMany field - self.object.book_id
+            Documentation: https://docs.djangoproject.com/en/4.0/topics/db/examples/many_to_many/"""
+
             self.object.book_id.add(basket_book.book_id) # we add the Book object!
 
+            """For saving quantities books and their cost we must create and fill 
+            additional table - OrderDetails"""
+        
+            OrderDetails.objects.create(
+                order_id= self.object,
+                book_id= basket_book.book_id,
+                quantity= basket_book.quantity,
+                cost= basket_book.book_id.cost,
+            )
+        
+            """Additionally change quantity of books in stock"""
+
+            book = basket_book.book_id
+            book.units_in_stock -= basket_book.quantity
+            book.save()
+
         # presently we need to clear the Basket table
-        Basket.objects.all().delete()
+        Basket.objects.filter(user_id=request.user).delete()
         return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
@@ -162,7 +183,7 @@ class OrderCreateView(CreateView):
 
 
 ########################################################################
-#####         Authentication, Registration and LogOut              #####
+#####     Authentication, Registration, LogOut and Profile         #####
 ########################################################################
 
 class CustomLoginView(LoginView):
@@ -200,6 +221,15 @@ class CustomLogOut(LogoutView):
 
     next_page = reverse_lazy('home')
 
+class Profile(DetailView):
+    model = User
+    template_name = 'buybook/profile.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, *args, **kwarg):
+        context = super().get_context_data(*args, **kwarg)
+        context['orders'] = Order.objects.filter(user_id=self.request.user)
+        return context
 
 
 ########################################################################

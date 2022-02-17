@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h3>Профиль</h3>
+
+<p>Пользователь: {{ request.user.username }}</p>
+<div class="table">
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th style="width: 5%; text-align: center;">id</th>
+                <th style="width: 65%; text-align: center;">Названия книг</th>
+                <th style="width: 10%; text-align: center;">Стоимость</th>
+                <th style="width: 8%; text-align: center;">Индекс</th>
+                <th style="width: 12%; text-align: center;">Дата доставки</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <th style="text-align: center; font-weight: normal; vertical-align: middle;">{{ order.pk }}</th>
+                <th style="font-weight: normal; vertical-align: middle;">
+                    
+                    <ul style="margin: 5px;">
+                        {% for record in order.books.all %}
+                        <li>
+                            <a href="{% url 'book_detail_page' record.book_id.slug %}">{{ record.book_id.title }}</a> - {{ record.quantity }} шт. по {{ record.cost }} руб.
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </th>
+                <th style="text-align: center; font-weight: normal; vertical-align: middle;">{{ order.total_cost }} ₽</th>
+                
+                {% if order.postcode %}
+                    <th style="text-align: center; font-weight: normal; vertical-align: middle;" title="Адрес доставки: {{ order.address }}">{{ order.postcode }}</th>
+                {% else %}
+                    <th style="text-align: center; font-weight: normal; vertical-align: middle;">{{ order.postcode }}</th>
+                {% endif %}
+
+                {% if order.date_of_receipt %}
+                <th style="text-align: center; font-weight: normal; vertical-align: middle;" title="Дата оформления заказа: {{ order.created_at|date }}">{{ order.date_of_receipt|date }}</th>
+                {% else %}
+                <th style="text-align: center; font-weight: normal; vertical-align: middle;">{{ order.date_of_receipt|date }}</th>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p class="text-muted">При наведении курсора на индекс будет показан адрес доставки, а при наведении на дату доставки - дата принятия заказа</p>
+
+{% endblock content %}

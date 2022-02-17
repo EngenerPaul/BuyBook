@@ -7,6 +7,11 @@
                 <ul class="nav nav-pills">
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
+                            <a class="btn btn-primary" href="{% url 'profile' request.user.pk %}" style="padding: 2px; margin: 0px 5px">
+                                <img src="{% static 'img/profile.png' %}" alt="profile" height="32">
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="btn btn-danger" href="{% url 'logout_page' %}">LogOut</a>
                         </li>
                     {% else %}

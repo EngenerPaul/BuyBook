@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from .views import Home, BookDetail, BookByGenre, Search, OrderCreateView, \
-                   CustomLoginView, CustomRegistration, CustomLogOut, \
+                   CustomLoginView, CustomRegistration, CustomLogOut, Profile, \
                    BasketView, CreateBasketBook, CreateBasketBook_BDP, \
                        Move_to_Marked_Button, Delete_from_basket_Button, \
                        ChangeQuantity, \
@@ -20,6 +20,7 @@ urlpatterns = [
     path('login', CustomLoginView.as_view(), name='login_page'),
     path('registration', CustomRegistration.as_view(), name='registration_page'),
     path('logout', CustomLogOut.as_view(), name='logout_page'),
+    path('profile/id=<int:pk>', Profile.as_view(), name='profile'),
    
     path('basket', BasketView.as_view(), name='basket_page'),  # adress basket-of page
     path('basket/add/<int:pk>', CreateBasketBook.as_view(), name='add_to_basket'),  # adress button in index.html
