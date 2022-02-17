@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h3 style="margin-bottom: 25px;">Оформление заказа</h3>
+<h5>Список товаров</h5>
+<ul>
+    {% for product in products %}
+    <li>{{ product.book_id.title }} - {{ product.quantity }} шт.</li>
+{% endfor %}
+</ul>
+<p>Стоимость к оплате: <strong>{{ cost }}</strong> ₽ <span class="text-muted">(оплата картой при получении заказа)</span></p>
+
+<div class="row">
+    <div class="col-6">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p>Дата поставки: {{ date }}</p>
+            <input type="number" name="total_cost" value="{{ cost }}" hidden="True">
+            <button type='submit' class="btn btn-primary" >Подтвердить</button>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- <div class="modal fade" id="custom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ошибка</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p style="margin: 7px 0px;">
+                    В пет-проекте нельзя оформить заказ
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+
+{% endblock content %}

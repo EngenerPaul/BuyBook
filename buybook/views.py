@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from typing import List
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
@@ -9,8 +11,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
 
-from .models import Book, Author, Genre, Basket, Marked
-from .forms import AuthUserForm, RegisterUserForm, CommentForm, BasketForm
+from .models import Book, Author, Genre, Basket, Marked, Order
+from .forms import AuthUserForm, RegisterUserForm, CommentForm, BasketForm, OrderForm
 
 
 
@@ -87,6 +89,7 @@ class BookByGenre(ListView):
         context['genres'] = Genre.objects.all()
         return context
 
+
 class Search(ListView):
     """Search books by title and author"""
 
@@ -105,6 +108,57 @@ class Search(ListView):
         context = super().get_context_data(**kwargs)
         context['genres'] = Genre.objects.all()
         return context
+
+
+class OrderCreateView(CreateView):
+    """Show the page for creating a new order"""
+
+    model = Order
+    template_name = 'buybook/order_creation.html'
+
+    form_class = OrderForm
+    success_url = reverse_lazy('home')
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(request, form)
+        else:
+            return self.form_invalid(form)
+        
+
+    def form_valid(self, request, form):
+        self.object = form.save(commit=False)
+        self.object.user_id = request.user
+        self.object.total_cost = int(request.POST['total_cost'])
+        self.object.save()
+
+        """ A ManyToMany field is filled after create new object (in both models).
+        Futher we create list objects from another model - Basket.objects.filter(...).
+        Note: our model (Order) tied with Book model, because we use FpreignKey - book_id.
+        We scroll through Book objects 
+        and use the method add() to the ManyToMany field - self.object.book_id
+        Documentation: https://docs.djangoproject.com/en/4.0/topics/db/examples/many_to_many/"""
+
+        for basket_book in Basket.objects.filter(user_id=request.user):
+            self.object.book_id.add(basket_book.book_id) # we add the Book object!
+
+        # presently we need to clear the Basket table
+        Basket.objects.all().delete()
+        return super().form_valid(form)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['products'] = Basket.objects.filter(user_id=self.request.user)
+        context['quantity'] = 0
+        context['cost'] = 0
+        context['date'] = datetime.now().date() + timedelta(days=14)
+        if self.request.user.is_authenticated:
+            for obj in Basket.objects.filter(user_id=self.request.user):
+                context['quantity'] += obj.quantity
+                context['cost'] += obj.book_id.cost * obj.quantity
+        return context
+
 
 
 ########################################################################

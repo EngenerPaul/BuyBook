@@ -1,12 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Comment, Basket
+from .models import Comment, Basket, Order
 
 
-# Authentication
-# AuthenticationForm needed for using authentication 
+
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
+    """Form for authentication. 
+    Use in views - CustomLoginView, template - login.html"""
+    # AuthenticationForm needed for using authentication 
+
     class Meta:
         model = User
         fields = ('username', 'password')
@@ -21,8 +24,11 @@ class AuthUserForm(AuthenticationForm, forms.ModelForm):
             self.fields['username'].widget.attrs['placeholder'] = 'Укажите Ваше имя'
             self.fields['password'].widget.attrs['placeholder'] = 'Введите пароль'
 
-# Registration
+
 class RegisterUserForm(forms.ModelForm):
+    """Form for registration
+    Use in views - CustomRegistration, template - registration.html"""
+
     class Meta:
         model = User
         fields = ('username', 'password')
@@ -50,7 +56,11 @@ class RegisterUserForm(forms.ModelForm):
             user.save()
         return user
 
+
 class CommentForm(forms.ModelForm):
+    """Form for creating new comments
+    Use in views - BookDetail, template - bookdetail.html"""
+
     class Meta:
         model = Comment
         fields = ('text', 'estimate', )
@@ -70,7 +80,34 @@ class CommentForm(forms.ModelForm):
             })
         }
 
+
 class BasketForm(forms.ModelForm):
+    """Form for change quantity books in Basket (basket.html)
+    Use in views - BasketView, template - basket.html"""
+
     class Meta: 
         model = Basket
         fields = ('quantity', )
+
+
+class OrderForm(forms.ModelForm):
+    """Form for new order formation
+    Use in views - OrderCreateView, template - order_creation.html"""
+
+    class Meta:
+        model = Order
+        fields = ('address', 'postcode', )
+        labels = {
+            'address': 'Адрес проживания',
+            'postcode': 'Почтовый индекс',
+        }
+        widgets = {
+            'address': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'необязательно'
+            }),
+            'postcode': forms.TextInput(attrs={
+                'placeholder': 'необязательно',
+                'style': 'width: 130px; border: 1px solid #ced4da;',
+            }),
+        }

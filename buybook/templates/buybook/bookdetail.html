@@ -68,11 +68,11 @@
             <button type="submit" class="btn btn-primary btn-block">Отправить</button>
         </form>
     {% else %}
-    <form method="get">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <a type="submit" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#is_not_authenticated">Отправить</a>
-    </form>
+        <form method="get">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <a type="submit" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#is_not_authenticated">Отправить</a>
+        </form>
     {% endif %}
 </div>
 <div style="width: 600px">

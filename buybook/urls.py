@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import Home, BookDetail, BookByGenre, Search, \
+from .views import Home, BookDetail, BookByGenre, Search, OrderCreateView, \
                    CustomLoginView, CustomRegistration, CustomLogOut, \
                    BasketView, CreateBasketBook, CreateBasketBook_BDP, \
-                       Move_to_Marked_Button, Delete_from_basket_Button, ChangeQuantity, \
+                       Move_to_Marked_Button, Delete_from_basket_Button, \
+                       ChangeQuantity, \
                    MarkedView, CreateMarkedBook, CreateMarkedBook_BDP, \
                        Move_to_Basket_Button, Delete_from_marked_Button\
                    
@@ -14,6 +15,7 @@ urlpatterns = [
     path('bookdetail/<str:slug>', BookDetail.as_view(), name='book_detail_page'),
     path('genre/<str:slug>', BookByGenre.as_view(), name='genre_page'),
     path('search', Search.as_view(), name='search'),
+    path('order', OrderCreateView.as_view(), name='create_order_page'),
 
     path('login', CustomLoginView.as_view(), name='login_page'),
     path('registration', CustomRegistration.as_view(), name='registration_page'),
