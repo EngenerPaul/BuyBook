@@ -21,6 +21,7 @@ class Home(ListView):
     model = Book
     template_name = 'buybook/index.html'
     context_object_name = 'book_list'
+    paginate_by = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -3,7 +3,7 @@
 <div class="row">
 
     <div class="col-4" style="min-width: 60px; padding: 0px 5px; display: flex; align-items: center; justify-content: center;">
-        <p style="margin: 0px;">{{ book.cost }} ₽</p>
+        <p style="margin: 0px;"><strong>{{ book.cost }} ₽</strong></p>
     </div>
 
     <div class="col-5" style="padding: 0 2px; min-width: 125px; display: flex; align-items: center;">
@@ -11,13 +11,13 @@
             {% if request.user.is_authenticated %}
                 <form id="create_basket_form_{{book.pk}}" action="{% url buy_url book.pk %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#go_to_basket" style="padding: 6px 12px 6px 6px; width: 100%; ">
+                    <button type="submit" class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#go_to_basket_{{ book.pk }}" style="padding: 6px 12px 6px 6px; width: 100%; ">
                         <img src="{% static 'img/minibasket.png' %}" alt="minibasket" height="20">
                         Купить
                     </button>
                 </form>
             {% else %}
-                <button type="submit" class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#is_not_authenticated" style="padding: 6px 12px 6px 6px; width: 100%; ">
+                <button type="submit" class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#is_not_authenticated_{{ book.pk }}" style="padding: 6px 12px 6px 6px; width: 100%; ">
                     <img src="{% static 'img/minibasket.png' %}" alt="minibasket" height="20">
                     Купить
                 </button>
@@ -30,12 +30,12 @@
             {% if request.user.is_authenticated %}
                 <form id="create_marked_form_{{book.pk}}" action="{% url mark_url book.pk %}" method="post">
                     {% csrf_token %}
-                    <button type='submit' class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#go_to_marked" style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                    <button type='submit' class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#go_to_marked_{{ book.pk }}" style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
                         <img src="{% static 'img/bookmark.png' %}" alt="mark" width="20px">
                     </button>
                 </form>
             {% else %}
-                <button type="submit" class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#is_not_authenticated" style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
+                <button type="submit" class='btn btn-primary btn-block' data-bs-toggle="modal" data-bs-target="#is_not_authenticated_{{ book.pk }}" style="padding: 6px 12px 6px 6px; width: 100%; min-width: 30px; padding: 6px 0px;">
                     <img src="{% static 'img/bookmark.png' %}" alt="mark" width="20px">
                 </button>
             {% endif %}
@@ -44,7 +44,7 @@
 
 </div>
 
-<div class="modal fade" id="go_to_basket" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="go_to_basket_{{ book.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="go_to_marked" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="go_to_marked_{{ book.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="is_not_authenticated" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="is_not_authenticated_{{ book.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

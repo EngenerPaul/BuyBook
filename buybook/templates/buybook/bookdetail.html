@@ -17,9 +17,9 @@
             {% endfor %}
         </p>
         <hr>
-        <div style="width: 300px">
+        <div>
             <div class="row">
-                <div class="col-5">
+                <div class="col-5" style="width: 150px">
                     <p>ISBN</p>
                     <p>Страниц</p> 
                     <p>Год издания</p>
@@ -41,7 +41,9 @@
                 </div>
             </div>
 
-            {% include 'buybook/buttons.html' %}
+            <div style="width: 300px">
+                {% include 'buybook/inc/_buttons.html' %}
+            </div>
 
         </div>
     </div>

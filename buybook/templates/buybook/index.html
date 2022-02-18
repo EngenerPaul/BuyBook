@@ -13,7 +13,7 @@
         <div class="row">
 
             {% for book in book_list %}
-            <div class="col-4">
+            <div class="col-4" style="margin-bottom: 25px;">
                 <div class="card h-100">
                     <a href="{{ book.get_absolute_url }}" style="margin: auto; margin-top: 10px;">
                         <img src="{{ book.cover.url }}" alt="cover" height=300>
@@ -26,15 +26,17 @@
                         </h5>
                         <h6 class="card-subtitle mb-3 text-muted">{{ book.author.full_name }}</h6>
                         
-                        {% include 'buybook/buttons.html' %}
+                        {% include 'buybook/inc/_buttons.html' %}
                         
                     </div>
-
                 </div>
-                </div>
+            </div>
             {% endfor %}
 
         </div>
+        
+        {% include 'buybook/inc/_paginator.html' %}
+
     </div>
 
 </div>

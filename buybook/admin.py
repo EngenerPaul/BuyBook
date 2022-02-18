@@ -29,6 +29,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'book', 'estimate', )
+    readonly_fields = ('text', 'estimate', )
 
 
 class BasketAdmin(admin.ModelAdmin):
