@@ -4,27 +4,25 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3 offset-md-9">
-                <ul class="nav nav-pills">
+                <div class="row">
                     {% if request.user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="btn btn-primary" href="{% url 'profile' request.user.pk %}" style="padding: 2px; margin: 0px 5px">
-                                <img src="{% static 'img/profile.png' %}" alt="profile" height="32">
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-danger" href="{% url 'logout_page' %}">LogOut</a>
-                        </li>
+                    <div class="col-6 text-center" style="min-width: 55px;">
+                        <a class="btn btn-primary" href="{% url 'profile' request.user.pk %}" style="padding: 2px; margin: 0px 5px">
+                            <img src="{% static 'img/profile.png' %}" alt="profile" height="32">
+                        </a>
+                    </div>
+                    <div class="col-6 text-center" style="min-width: 80px;">
+                        <a class="btn btn-danger" href="{% url 'logout_page' %}">Выйти</a>
+                    </div>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login_page' %}">Authentication</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'registration_page' %}">Registration</a>
-                        </li>
+                    <div class="col-6">
+                        <a class="nav-link" href="{% url 'login_page' %}">Авторизация</a>
+                    </div>
+                    <div class="col-6">
+                        <a class="nav-link" href="{% url 'registration_page' %}">Регистрация</a>
+                    </div>
                     {% endif %}
-                </ul> 
-
-                
+                </div>
             </div>
         </div>
     </div>
@@ -56,12 +54,17 @@
 
             <div class="col-3 align-self-center">
                 <div class="row">
-                    <div class="col-6">
-                        <img src="{% static 'img\basket.png' %}" alt="basket" height="80">
+                    <div class="col-6 text-center" style="min-width: 130px;">
+                        <a href="{% url 'basket_page' %}">
+                            <img src="{% static 'img\basket.png' %}" alt="basket" height="80">
+                        </a>
                     </div>
-                    <div class="col-6">
-                        <a href="{% url 'basket_page' %}">Корзина</a> <br>
-                        <a href="{% url 'marked_page' %}">Закладки</a>
+                    <div class="col-6 text-center" style="min-width: 80px;">
+                        <a href="{% url 'marked_page' %}">
+                            <img src="{% static 'img\bookmark_header.png' %}" alt="bookmark" height="80">
+                        </a>
+                        <!-- <a href="{% url 'basket_page' %}">Корзина</a> <br>
+                        <a href="{% url 'marked_page' %}">Закладки</a> -->
                     </div>
                 </div>
             </div>

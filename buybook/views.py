@@ -1,16 +1,16 @@
 from datetime import datetime, timedelta
 
-from django.http import HttpResponse, HttpResponseRedirect
+# from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, View, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, View, DeleteView
 from django.views.generic.edit import FormMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
 
-from .models import Book, Author, Genre, Basket, Marked, Order, OrderDetails
+from .models import Book, Author, Genre, Comment, Basket, Marked, Order, OrderDetails
 from .forms import AuthUserForm, RegisterUserForm, CommentForm, BasketForm, OrderForm
 
 
@@ -71,6 +71,16 @@ class BookDetail(DetailView, FormMixin):
         context['buy_url'] = 'add_to_basket_from_detail'  # url-adress for button "buy"
         context['mark_url'] = 'add_to_marked_from_detail'  # url-adress for button "mark"
         return context
+
+
+class DeleteComment(DeleteView):
+    """This button removes the comment in the book details"""
+
+    model = Comment
+    template_name = 'buybook/bookdetail.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('book_detail_page', kwargs={'slug': self.get_object().book.slug})
 
 
 class BookByGenre(ListView):

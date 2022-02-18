@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import Home, BookDetail, BookByGenre, Search, OrderCreateView, \
+from .views import Home, BookDetail, DeleteComment, BookByGenre, Search, OrderCreateView, \
                    CustomLoginView, CustomRegistration, CustomLogOut, Profile, \
                    BasketView, CreateBasketBook, CreateBasketBook_BDP, \
                        Move_to_Marked_Button, Delete_from_basket_Button, \
@@ -13,6 +13,7 @@ from .views import Home, BookDetail, BookByGenre, Search, OrderCreateView, \
 urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('bookdetail/<str:slug>', BookDetail.as_view(), name='book_detail_page'),
+    path('bookdetail/delete_comment/<int:pk>', DeleteComment.as_view(), name='delete_comment_url'),
     path('genre/<str:slug>', BookByGenre.as_view(), name='genre_page'),
     path('search', Search.as_view(), name='search'),
     path('order', OrderCreateView.as_view(), name='create_order_page'),

@@ -1,9 +1,8 @@
 from django.urls import reverse
 from django.db import models
-from django.db.models import CharField, ForeignKey, ManyToManyField, \
-                             ImageField, IntegerField, FloatField, \
-                             SlugField, TextField, DateTimeField, \
-                             BooleanField, \
+from django.db.models import CharField, ForeignKey, ManyToManyField, ImageField, \
+                             IntegerField, FloatField, SlugField,\
+                             TextField, DateTimeField, BooleanField, \
                              CASCADE, SET_NULL
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -97,7 +96,7 @@ class Comment(models.Model):
         ordering = ('-created_at', )
 
     def __str__(self):
-        return f"The Comment class: {self.user}"
+        return f"The Comment class: id = {self.pk}"
 
 
 class Basket(models.Model):
