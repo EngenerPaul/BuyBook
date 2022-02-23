@@ -4,25 +4,26 @@ from django.contrib.auth.models import User
 from .models import Comment, Basket, Order
 
 
-
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
-    """Form for authentication. 
+    """Form for authentication.
     Use in views - CustomLoginView, template - login.html"""
-    # AuthenticationForm needed for using authentication 
+    # AuthenticationForm needed for using authentication
 
     class Meta:
         model = User
         fields = ('username', 'password')
-        
+
         # labels = {...}  doesn't work!
         # widgets = {...}  doesn't work!
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
-            self.fields['username'].widget.attrs['placeholder'] = 'Укажите Ваше имя'
-            self.fields['password'].widget.attrs['placeholder'] = 'Введите пароль'
+            self.fields['username'].widget.attrs[
+                'placeholder'] = 'Укажите Ваше имя'
+            self.fields['password'].widget.attrs[
+                'placeholder'] = 'Введите пароль'
 
 
 class RegisterUserForm(forms.ModelForm):
@@ -33,22 +34,23 @@ class RegisterUserForm(forms.ModelForm):
         model = User
         fields = ('username', 'password')
         labels = {
-            'username': 'Имя пользователя', 
+            'username': 'Имя пользователя',
             'password': 'Пароль',
         }
         widgets = {
-            'username':forms.TextInput(attrs={
-                'class': 'form-control', 
+            'username': forms.TextInput(attrs={
+                'class': 'form-control',
                 'placeholder': 'Укажите Ваше имя'
             }),
-            'password':forms.TextInput(attrs={
-                'class': 'form-control', 
+            'password': forms.TextInput(attrs={
+                'class': 'form-control',
                 'placeholder': 'Введите пароль'
             })
         }
-    
+
     # needed for saving password
-    # .\venv\Lib\site-packages\django\contrib\auth\forms.py - class UserCreationForm
+    # .\venv\Lib\site-packages\django\contrib\auth\forms.py -
+    # path of class UserCreationForm
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
@@ -85,7 +87,7 @@ class BasketForm(forms.ModelForm):
     """Form for change quantity books in Basket (basket.html)
     Use in views - BasketView, template - basket.html"""
 
-    class Meta: 
+    class Meta:
         model = Basket
         fields = ('quantity', )
 

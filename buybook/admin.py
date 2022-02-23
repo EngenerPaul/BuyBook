@@ -1,15 +1,26 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Book, Genre, Author, Comment, Basket, Marked, Order, OrderDetails
+from .models import Book, Genre, Author, Comment, Basket, Marked, \
+                    Order, OrderDetails
+
 
 class BookAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug":("title", ), }  # automatical creation slug using title
-    save_on_top = True  # button save on top of the page
-    list_display = ('id', 'title', 'get_cover', 'author', 
-                    'cost', 'discount', 'units_in_stock', )  # title of the columns in common list
-    list_display_links = ('id', 'title', 'get_cover', )  # create links on the column
-    search_fields = ('title', )  # create searche field on the top
+    # automatical creation slug using title
+    prepopulated_fields = {"slug": ("title", ), }
+
+    # button save on top of the page
+    save_on_top = True
+
+    # title of the columns in common list
+    list_display = ('id', 'title', 'get_cover', 'author',
+                    'cost', 'discount', 'units_in_stock', )
+
+    # create links on the column
+    list_display_links = ('id', 'title', 'get_cover', )
+
+    # create searche field on the top
+    search_fields = ('title', )
 
     def get_cover(self, obj):
         if obj.cover:
