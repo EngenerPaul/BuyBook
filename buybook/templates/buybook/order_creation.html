@@ -7,7 +7,9 @@
 <h5>Список товаров</h5>
 <ul>
     {% for product in products %}
-    <li>{{ product.book_id.title }} - {{ product.quantity }} шт.</li>
+    <li>
+        <a href="{{ product.book_id.get_absolute_url }}">{{ product.book_id.title }}</a>
+         - {{ product.quantity }} шт.</li>
 {% endfor %}
 </ul>
 <p>Стоимость к оплате: <strong>{{ cost }}</strong> ₽ <span class="text-muted">(оплата картой при получении заказа)</span></p>

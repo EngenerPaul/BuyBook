@@ -1,4 +1,5 @@
 {% load static %}
+{% load cache %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -15,7 +16,9 @@
 </head>
 <body>
 
+    {% cache 3600 about_me %}
     {% include 'inc/_about_me.html' %}
+    {% endcache %}
 
     {% include 'inc/_header.html' %}
 
