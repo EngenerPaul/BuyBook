@@ -16,6 +16,7 @@ from .forms import AuthUserForm, RegisterUserForm, CommentForm, BasketForm, \
                    OrderForm
 
 from datetime import datetime, timedelta
+from time import sleep
 
 
 def get_genres():
@@ -302,6 +303,7 @@ class CreateBasketBook(View):
                                      user_id=user_obj).exists():
             Basket.objects.create(book_id=book_obj, user_id=user_obj)
             # If the object exists then nothing happens
+        sleep(5)  # For modal window in the template
         return redirect('home')
 
 
@@ -316,6 +318,7 @@ class CreateBasketBook_BDP(View):
                                      user_id=user_obj).exists():
             Basket.objects.create(book_id=book_obj, user_id=user_obj)
             # If the object exists then nothing happens
+        sleep(5)  # For modal window in the template
         return redirect('book_detail_page', slug=book_obj.slug)
 
 
@@ -397,6 +400,7 @@ class CreateMarkedBook(View):
                                      user_id=user_obj).exists():
             Marked.objects.create(book_id=book_obj, user_id=user_obj)
             # If the object exists then nothing happens
+        sleep(5)  # For modal window in the template
         return redirect('home')
 
 
@@ -411,6 +415,7 @@ class CreateMarkedBook_BDP(View):
                                      user_id=user_obj).exists():
             Marked.objects.create(book_id=book_obj, user_id=user_obj)
             # If the object exists then nothing happens
+        sleep(5)  # For modal window in the template
         return redirect('book_detail_page', slug=book_obj.slug)
 
 
